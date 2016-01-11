@@ -224,9 +224,9 @@ app.controls = function (controls, $, jOrder, flock, cache, services, data) {
 	}
 	
 	var context = $('.tagedit.edit');
-	$('.remove', context).live('click', onRemove);
-	$('.explode', context).live('click', onExplode);
-	$('input', context).live('keyup', onChange);
+	$( document ).on('click', ('.remove', context), onRemove);
+	$( document ).on('click', ('.explode', context), onExplode);
+	$( document ).on('keyup', ('input', context), onChange);
 
 	return controls;
 }(app.controls || {},

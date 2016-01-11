@@ -183,8 +183,8 @@ app.controls = function (controls, $, flock, jOrder, services) {
 	}
 	
 	var context = $('div.w_libsel');
-	$('a.save', context).live('click', onSave);
-	$('input.new', context).live('keyup', onChange);
+	$( document).on('click', ('a.save', context), onSave);
+	$( document ).on('keyup', ('input.new', context), onChange);
 	
 	return controls;
 }(app.controls || {},
