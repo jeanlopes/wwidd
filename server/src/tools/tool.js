@@ -49,7 +49,7 @@ tool = {
 
 		// starting tool
 		console.log(["TOOL - executing:", that.executable, args ? args.join(" ") : ""].join(" "));
-		that.child = $child_process.spawn(that.executable, args);
+		that.child = $child_process.exec(that.executable, args);
 
 		// callback
 		function onData(data) {

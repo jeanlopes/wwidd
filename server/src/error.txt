@@ -1,0 +1,5 @@
+SYSTEM - OS type: linux
+DB - switching over to DB: default
+DB/default - executing query
+TOOL - executing: sqlite3 -header -line ../db/default.sqlite SELECT value FROM system WHERE key = 'version'
+TOOL - executing: ifconfig 

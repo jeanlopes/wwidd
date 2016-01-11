@@ -116,9 +116,9 @@ ifconfig.exec(function (ip) {
 	var url = 'http://' + ip + ':' + PORT;
 	server.listen(PORT, ip, function () {
 		console.log("Server running at " + url);
-		browser.exec(url, function () {
-			console.log("Browser started.");
-		});
+//		browser.exec(url, function () {
+//			console.log("Browser started.");
+//		});
 	});
 });
 
