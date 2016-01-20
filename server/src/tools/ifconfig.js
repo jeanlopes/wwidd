@@ -17,9 +17,10 @@ ifconfig = function () {
 		executable: {value: executable},
 		binary: {value: true}
 	});
-
-	self.exec = function (handler) {
-		tool.exec.call(self, null, function (code, stdout) {
+    
+    self.handler = null;
+    
+    self.getip = function (code, stdout) {
 			var result = LOOPBACK,
 					i, ip, tmp;
 
@@ -40,10 +41,15 @@ ifconfig = function () {
 				console.log("IFCONFIG - ifconfig failed, using loopback IP");
 			}
 			
-			if (handler) {
-				handler(result);
+			if (self.handler) {
+				self.handler(result);
 			}
-		}, true);
+		}
+
+	self.exec = function (handler) {
+        
+        self.handler = handler;
+        tool.exec.call(self, null, self.getip, true);
 
 		return self;
 	};

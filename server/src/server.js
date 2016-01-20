@@ -18,7 +18,7 @@ var	$http = require('http'),
 		
 		// environmental variables
 		PORT = 8124,
-		DEBUG = false,
+		DEBUG = true,
 		
 		// server object
 		server;
@@ -112,7 +112,7 @@ server = $http.createServer(function (req, res) {
 	}
 });
 
-ifconfig.exec(function (ip) {
+function start (ip) {
 	var url = 'http://' + ip + ':' + PORT;
 	server.listen(PORT, ip, function () {
 		console.log("Server running at " + url);
@@ -120,5 +120,7 @@ ifconfig.exec(function (ip) {
 			console.log("Browser started.");
 		});
 	});
-});
+}
+
+ifconfig.exec(start);
 

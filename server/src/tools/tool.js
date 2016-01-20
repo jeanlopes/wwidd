@@ -34,41 +34,8 @@ tool = {
 		}
 		return this;
 	},
-	
-	// executes tool in specified mode
-	// - args: command line arguments to be passed to process
-	// - handler: handler to run after execution completed
-	// - silent: doesn't throw exception on nonzero return value
-	exec: function (args, handler, silent) {
-		var stdout = [],
-				that = this;		// because of nested functions
-
-		if (!that.executable) {
-			throw "No executable defined for tool.";
-		}
-
-		// avoiding null in args
-		if (!args) {
-			args = [];
-		}
-
-		// starting tool
-		console.log(["TOOL - executing:", that.executable, args ? args.join(" ") : ""].join(" "));
-		that.child = $child_process.spawn(that.executable, args);
-
-		// callback
-		function onData(data) {
-			stdout.push(Buffer.isBuffer(data) ? data.toString(that.binary ? 'binary' : 'utf8') : data);
-		} 
-		
-		// data buffering
-		that.child.stdout.on('data', onData);
-		if (that.stderr) {
-			that.child.stderr.on('data', onData);
-		}
-		
-		// handling tool exit
-		that.child.on('exit', function (code) {
+    
+    toolCallback : function (that ,code, stdout, silent, handler) {
 			var message;
 			if (code !== 0) {
 				message = ["Tool", "'" + that.executable + "'", "exited with code:", code].join(" ") + ".";
@@ -93,7 +60,46 @@ tool = {
 					handler(code, stdout.join(''));
 				}
 			}
-		});
+		},
+	
+	// executes tool in specified mode
+	// - args: command line arguments to be passed to process
+	// - handler: handler to run after execution completed
+	// - silent: doesn't throw exception on nonzero return value
+	exec: function (args, handler, silent) {
+        
+		var stdout = [],
+            that = this; // because of nested functions
+            
+
+		if (!that.executable) {
+			throw "No executable defined for tool.";
+		}
+
+		// avoiding null in args
+		if (!args) {
+			args = [];
+		}
+
+		// starting tool
+		console.log(["TOOL - executing:", that.executable, args ? args.join(" ") : ""].join(" "));
+		that.child = $child_process.spawn(that.executable, args);
+
+		// callback
+		function onData(data) {
+			stdout.push(Buffer.isBuffer(data) ? data.toString(that.binary ? 'binary' : 'utf8') : data);
+            that.toolCallback(that, 0, stdout, silent, handler);
+		} 
+		
+		// data buffering
+		that.child.stdout.on('data', onData);
+        
+		if (that.stderr) {
+			that.child.stderr.on('data', onData);
+		}
+		
+		// handling tool exit
+		//that.child.on('exit', that.toolCallback);
 		
 		return that;
 	}
